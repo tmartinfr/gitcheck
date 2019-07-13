@@ -310,12 +310,11 @@ def getDefaultBranch(rep):
     gitbranch = gitExec(rep, "branch"
                         % locals())
 
-    branch = ""
+    branch = []
     m = sbranch.search(gitbranch)
     if m:
-        branch = m.group(1)
-
-    return {branch}
+        branch.append(m.group(1))
+    return branch
 
 
 # Get all branches for repository
@@ -370,6 +369,8 @@ def gitcheck():
             branch = getAllBranches(r)
         else:
             branch = getDefaultBranch(r)
+        if not branch:
+            branch = ['master']
         for b in branch:
             if checkRepository(r, b):
                 actionNeeded = True
